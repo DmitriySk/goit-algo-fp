@@ -28,7 +28,7 @@ def add_edges(graph, node, pos, x=0, y=0, layer=1):
     return graph
 
 
-def draw_tree(tree_root):
+def draw_tree(tree_root, title=None):
     tree = nx.DiGraph()
     pos = {tree_root.id: (0, 0)}
     tree = add_edges(tree, tree_root, pos)
@@ -36,29 +36,22 @@ def draw_tree(tree_root):
     colors = [node[1]['color'] for node in tree.nodes(data=True)]
     labels = {node[0]: node[1]['label'] for node in tree.nodes(data=True)} # Використовуйте значення вузла для міток
 
-    plt.figure(figsize=(8, 5))
-    nx.draw(tree, pos=pos, labels=labels, arrows=False, node_size=2500, node_color=colors)
+    plt.figure(figsize=(12, 7))
+    if title:
+        plt.title(title, fontsize=14, fontweight="bold", pad=15)
+    nx.draw(
+        tree,
+        pos=pos,
+        labels=labels,
+        arrows=False,
+        node_size=2500,
+        node_color=colors,
+        font_color="white",
+        font_size=11,
+        font_weight="bold",
+    )
     plt.show()
 
-nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-heapq.heapify(nums)
-colors = [
-    "#1874CD",
-    "#2E86C1",
-    "#3498DB",
-    "#5DADE2",
-    "#85C1E9",
-    "#A9CCE3",
-    "#2ECC71",
-    "#27AE60",
-    "#1E8449",
-    "#58D68D",
-    "#82E0AA",
-    "#A9DFBF",
-    "#F7DC6F",
-    "#F0B27A",
-    "#EC7063",
-]
 
 def build_heap(values):
     if not values:
@@ -67,7 +60,7 @@ def build_heap(values):
     heap = values[:]
     heapq.heapify(heap)
 
-    nodes = [Node(val, color=colors[i % len(colors)]) for i, val in enumerate(heap)]
+    nodes = [Node(val) for i, val in enumerate(heap)]
 
     for i in range(len(nodes)):
         left_idx  = 2 * i + 1
@@ -80,6 +73,9 @@ def build_heap(values):
 
     return nodes[0]
 
-root = build_heap(nums)
 
-draw_tree(root)
+if __name__ == "__main__":
+    nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    heapq.heapify(nums)
+    root = build_heap(nums)
+    draw_tree(root)
