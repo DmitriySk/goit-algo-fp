@@ -92,3 +92,4 @@ def draw_pythagoras(size=100):
 
 if __name__ == "__main__":
     draw_pythagoras()
+
